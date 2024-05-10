@@ -1,7 +1,7 @@
 
 const Slide = ({image}) => {
     return (
-        <div className="hero h-[70vh] bg-contain" style={{backgroundImage: `url(${image})`}}>
+        <div className="hero h-[70vh] bg-contain bg-no-repeat" style={{backgroundImage: `url(${image})`}}>
         <div className="hero-overlay bg-opacity-60"></div>
         <div className="hero-content text-center text-neutral-content">
           <div className="max-w-md">
