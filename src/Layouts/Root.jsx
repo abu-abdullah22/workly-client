@@ -1,8 +1,10 @@
+import Navbar from "../Components/Navbar";
+
 const Root = () => {
     return (
         <div>
-            <h1>HELLOOOOOO</h1>
             {/* Navbar */}
+            <Navbar></Navbar>
 
             {/* Outlet */}
 
