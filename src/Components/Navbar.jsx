@@ -1,22 +1,38 @@
 import { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logOut} = useContext(AuthContext);
+    const navigate = useNavigate() ;
+
+   
+    const handleLogOut = async () => {
+        try{
+            await logOut();
+            navigate('/') ;
+            toast.success('Log Out successful!')
+        } catch (err) {
+            console.log(err);
+        }
+    }
     const navLink = (
         <>
-            <li className="font-medium mr-2"><NavLink to={'/'}>Home</NavLink></li>
-            <li className="font-medium mr-2"><NavLink>All Jobs</NavLink></li>
-            {user && <li className="font-medium mr-2"><NavLink>Applied Jobs</NavLink></li>}
-            {user && <li className="font-medium mr-2"><NavLink>Add A Job</NavLink></li>}
-            {user && <li className="font-medium mr-2"><NavLink>My Jobs</NavLink></li>}
-            <li className="font-medium mr-2"><NavLink>Blogs</NavLink></li>
+            <li><NavLink to={'/'}>Home</NavLink></li>
+            <li><NavLink to={'/all-jobs'} className='mr-2'>All Jobs</NavLink></li>
+            {user && <>
+                <li><NavLink to={'/appliedJobs'} className='mr-2'>Applied Jobs</NavLink></li>
+                <li><NavLink to={'/add-a-job'} className='mr-2'>Add A Job</NavLink></li>
+                <li><NavLink to={'/my-jobs'} className='mr-2'>My Jobs</NavLink></li>
+
+            </>}
+            <li><NavLink to={'/blogs'}>Blogs</NavLink></li>
         </>
     )
 
     return (
-        <div className="navbar bg-base-100 lg:px-10 ">
+        <div className="navbar bg-base-100 lg:px-10 pt-4">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -37,11 +53,25 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-            {
-                !user && <div className=" hidden md:block tooltip tooltip-bottom" data-tip={user?.displayName || 'user'}>
-                    <img src={user?.photoURL || '/user.jpg'} className="w-[50px] h-[50px] rounded-full" alt="" />
-                </div>
-            }
+                {
+                    user && <div className=" hidden md:block tooltip tooltip-bottom" data-tip={user?.displayName || 'user'}>
+                        <img referrerPolicy="no-referrer" src={user?.photoURL || '/user.jpg'} className="w-[50px] h-[50px] rounded-full" alt="" />
+                    </div>
+
+
+                }
+
+                {
+                    user && <div>
+                        <button onClick={handleLogOut} className="ml-2 btn bg-[#f5baa3] text-white">Log Out</button>
+                    </div>
+                }
+
+                {
+                    !user && <div>
+                        <Link to={'/login'}><button className="btn bg-[#e08686] text-white">Login</button></Link>
+                    </div>
+                }
             </div>
         </div>
     );
