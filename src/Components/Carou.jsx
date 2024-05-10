@@ -5,10 +5,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+import bg1 from '../assets/images/bg1.jpg'
+import bg2 from '../assets/images/bg2.jpg'
+import bg3 from '../assets/images/bg3.jpg'
+
 
 
 // import required modules
 import { Pagination } from 'swiper/modules';
+import Slide from './Slide';
 
 export default function App() {
   const pagination = {
@@ -19,22 +24,17 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className='py-12 px-8 container mx-auto'>
       <Swiper
         pagination={pagination}
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        <SwiperSlide><Slide image={bg1}></Slide></SwiperSlide>
+        <SwiperSlide><Slide image={bg2}></Slide></SwiperSlide>
+        <SwiperSlide><Slide image={bg3}></Slide></SwiperSlide>
+    
       </Swiper>
-    </>
+    </div>
   );
 }
