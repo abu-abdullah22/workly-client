@@ -2,10 +2,20 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import JobCard from './JobCard';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const TabSection = ({ jobs }) => {
+const TabSection = () => {
+    const [jobs, setJobs] = useState([]) ;
+    useEffect(()=> {
+        const getData = async ()=> {
+            const {data} = await axios(`${import.meta.env.VITE_API_URL}/jobs`); 
+            setJobs(data) ;
+        }
+        getData() ;
+    }, [])
     return (
-        <Tabs>
+        <Tabs className={'my-20'}>
             <h1 className='text-center text-3xl font-bold my-8'>Jobs by category</h1>
             <div className='container mx-auto'>
                 <div className='flex items-center justify-center'>
