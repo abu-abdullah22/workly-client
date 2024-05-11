@@ -6,40 +6,42 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const JobDetails = () => {
-    const {user} = useContext(AuthContext) ;
+    const { user } = useContext(AuthContext);
     const job = useLoaderData();
-    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email} = job;
-    const navigate = useNavigate() ;
+    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email } = job;
+    const navigate = useNavigate();
 
     const handleSubmit = async e => {
-        e.preventDefault() ;
-        const form = e.target ;
-        const applierName = form.name.value ;
-        const applierEmail = form.email.value ;
-        const resume = form.resume.value ;
-        const hirerName = name ;
-        const hireremail = email ;
-        const jobTitle = job_title ;
-        const jobCategory = job_category; 
+        e.preventDefault();
+        const form = e.target;
+        const applierName = form.name.value;
+        const applierEmail = form.email.value;
+        const resume = form.resume.value;
+        const hirerName = name;
+        const hirerEmail = email;
+        const jobTitle = job_title;
+        const jobCategory = job_category;
 
-        const applyData = {applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hireremail} ;
+        const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail };
 
-        try{
+        try {
             const today = new Date()
             const deadlineDate = new Date(application_deadline);
             if (today > deadlineDate) {
-               navigate('/')
-               toast.error('Can not Apply! Deadline passed!')
-            } else{
-                const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/applied`, applyData) ;
-            navigate('/')
-            toast.success('Applied Successfully!')
+                navigate('/')
+                toast.error('Can not Apply! Deadline passed!')
+            } else if (hirerEmail === applierEmail) {
+                 navigate('/')
+                toast.error('Can not apply in your own job!')
             }
-        } catch(err) {
+            else {
+                const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/applied`, applyData);
+                navigate('/')
+                toast.success('Applied Successfully!')
+            }
+        } catch (err) {
             console.log(err);
         }
-        
-        
 
 
     }
@@ -74,19 +76,19 @@ const JobDetails = () => {
                                 <h3 className="font-bold text-lg">Apply</h3>
                                 <p className="py-4">Press Submit to confirm apply!</p>
                                 <div className="modal-action">
-                                    <form  onSubmit={handleSubmit}  method="dialog" className="w-full">
+                                    <form onSubmit={handleSubmit} method="dialog" className="w-full">
                                         {/* if there is a button in form, it will close the modal */}
                                         <div className="form-control">
                                             <label className="label">
                                                 <span className="label-text">Name</span>
                                             </label>
-                                            <input type="text" placeholder="name"name="name" defaultValue={user?.displayName} className="input input-bordered" readOnly />
+                                            <input type="text" placeholder="name" name="name" defaultValue={user?.displayName} className="input input-bordered" readOnly />
                                         </div>
                                         <div className="form-control">
                                             <label className="label">
                                                 <span className="label-text">Email</span>
                                             </label>
-                                            <input type="email" placeholder="email" name="email" defaultValue={user?.email} className="input input-bordered" readOnly/>
+                                            <input type="email" placeholder="email" name="email" defaultValue={user?.email} className="input input-bordered" readOnly />
                                         </div>
                                         <div className="form-control">
                                             <label className="label">
@@ -95,8 +97,9 @@ const JobDetails = () => {
                                             <input type="text" placeholder="resume" name="resume" className="input input-bordered" required />
                                         </div>
                                         <div className="form-control mt-6">
-                                            <button type="submit"  className="btn btn-primary">Submit</button>
+                                            <button type="submit" className="btn btn-primary">Submit</button>
                                         </div>
+                                        <button type="button" className="btn btn-error mt-5 w-full" onClick={() => document.getElementById('my_modal_5').close()}>Cancel</button>
                                     </form>
                                 </div>
                             </div>
