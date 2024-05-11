@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 const Login = () => {
     const { signIn, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate() ;
+    const location = useLocation();
 
     const handleSignIn = async e => {
         e.preventDefault() ;
@@ -16,7 +17,7 @@ const Login = () => {
         const password = form.password.value ;
         try{
             await signIn(email, password)
-            navigate('/') ;
+            navigate(location?.state || '/') ;
             toast.success('Log in successful!')
         } catch (err) {
             console.log(err);
@@ -27,7 +28,7 @@ const Login = () => {
     const handleGoogle = async () => {
         try{
             await signInWithGoogle() ;
-            navigate('/') ;
+            navigate(location?.state || '/');
             toast.success('Log in successful!')
         } catch (err) {
             console.log(err);

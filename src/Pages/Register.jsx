@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
@@ -8,6 +8,7 @@ const Register = () => {
 
     const { createUser, signInWithGoogle, updateUserProfile, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation() ;
 
     const handleSignUp = async e => {
         e.preventDefault();
@@ -21,7 +22,7 @@ const Register = () => {
             await createUser(email, password)
             await updateUserProfile(name, photo)
             setUser({ photoURL: photo, displayName: name });
-            navigate('/')
+            navigate(location?.state || '/');
             toast.success('Sign Up Successful!')
         } catch (err) {
             console.log(err);
@@ -33,7 +34,7 @@ const Register = () => {
     const handleGoogle = async () => {
         try {
             await signInWithGoogle();
-            navigate('/');
+            navigate(location?.state || '/');
             toast.success('Log in successful!')
         } catch (err) {
             console.log(err);

@@ -22,6 +22,7 @@ const JobDetails = () => {
         const hirerEmail = email;
         const jobTitle = job_title;
         const jobCategory = job_category;
+        const salaryRange = salary_range ;
 
         const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail };
 
