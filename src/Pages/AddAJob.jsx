@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {Helmet} from "react-helmet";
 
 
 const AddAJob = () => {
@@ -44,6 +45,9 @@ const AddAJob = () => {
     }
     return (
         <div>
+            <Helmet>
+                <title>Add A JOb</title>
+            </Helmet>
             <div className="text-center space-y-5 my-8">
                 <h3 className="text-3xl">  Add A Job Opportunity</h3>
                 <p>Welcome to the job posting portal! Here, you can add new job opportunities for potential candidates</p>
@@ -97,6 +101,14 @@ const AddAJob = () => {
                         </label>
                         <input type="text" placeholder="salary range" name="salary" className="input input-bordered" required />
                     </div>
+
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Job Applicants :</span>
+                        </label>
+                        <input type="number" placeholder="applicants" name="applicants" defaultValue={0} className="input input-bordered" readOnly/>
+                    </div>
+
                     <div className="flex justify-between">
                         <div className="form-control">
                             <label className="label">

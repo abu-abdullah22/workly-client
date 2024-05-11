@@ -4,6 +4,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 const JobDetails = () => {
     const { user } = useContext(AuthContext);
@@ -47,6 +48,7 @@ const JobDetails = () => {
     }
     return (
         <div className="max-w-lg p-4 shadow-md dark:bg-gray-50 dark:text-gray-800 container mx-auto my-20 min-h-[calc(100vh-582px)]">
+            <Helmet><title>Job Details</title></Helmet>
             <div className="flex justify-between pb-4 border-bottom">
                 <div className="flex items-center font-bold">
                     {name}
