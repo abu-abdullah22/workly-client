@@ -114,7 +114,7 @@ const AddAJob = () => {
                             <label className="label">
                                 <span className="label-text">job Posting Date</span>
                             </label>
-                            <DatePicker className="border p-2 rounded-md" selected={startDate} onChange={(date) => setStartDate(date)} />
+                            <DatePicker className="border p-2 rounded-md" selected={startDate} onChange={(date) => setStartDate(date)}  readOnly/>
 
                         </div>
                         <div className="form-control">

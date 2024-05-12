@@ -13,7 +13,7 @@ const Register = () => {
     const handleSignUp = async e => {
         e.preventDefault();
         const form = e.target;
-        const name = form.name.value;
+        const name = form.username.value;
         const email = form.email.value;
         const password = form.password.value;
         const photo = form.photo.value;
