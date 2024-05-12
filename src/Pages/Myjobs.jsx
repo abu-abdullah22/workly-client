@@ -1,29 +1,42 @@
 /* eslint-disable no-unused-vars */
-import {  useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 
 
 const Myjobs = () => {
     const { user } = useAuth() ;
-    const [jobs, setJobs] = useState();
     const axiosSecure = useAxiosSecure(); 
-    useEffect(() => {
-        getData();
-    }, [user]);
+
+    const {data: jobs, isLoading, refetch} =  useQuery({
+        queryFn: ()=> getData(),
+        queryKey : ['jobs']
+       })
 
     const getData = async () => {
-  
         const { data } = await axiosSecure(`/jobs/${user?.email}`);
-        setJobs(data);
+        return data ;
     }
 
-    console.log(jobs);
+ 
+
+    const { mutateAsync} = useMutation({
+        mutationFn: async (id) => {
+            const { data } = await axiosSecure.delete(`/job/${id}`);
+            return data;
+        },
+        onSuccess : async ()=> {
+            await refetch();
+            toast.success('Deleted Successfully!');
+        }
+    })
+
+    if(isLoading) return <p>Loading ...</p>
 
     const handleDelete = async id => {
         try {
@@ -36,10 +49,8 @@ const Myjobs = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             });
-            if (result.isConfirmed) {
-                const { data } = await axiosSecure.delete(`/job/${id}`);
-                toast.success('Deleted Successfully!');
-                getData();
+            if (result.isConfirmed) {           
+               await mutateAsync(id);  
             }
 
         } catch (err) {
@@ -47,7 +58,7 @@ const Myjobs = () => {
         }
 
     }
-
+    if(isLoading) return <p>Loading ...</p>
 
     return (
         <div className="min-h-[80vh] container mx-auto my-20">

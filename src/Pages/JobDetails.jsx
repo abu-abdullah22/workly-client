@@ -6,13 +6,24 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
 
 const JobDetails = () => {
     const { user } = useContext(AuthContext);
     const job = useLoaderData();
     const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email } = job;
     const navigate = useNavigate();
-    const axiosSecure = useAxiosSecure(); 
+    const axiosSecure = useAxiosSecure();
+
+ const {mutateAsync} =   useMutation({
+        mutationFn: async (applyData)=> {
+            const { data } = await axiosSecure.post(`/applied`, applyData);
+        },
+        onSuccess : ()=> {
+            navigate('/')
+            toast.success('Applied Successfully!')
+        } 
+    })
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -24,9 +35,11 @@ const JobDetails = () => {
         const hirerEmail = email;
         const jobTitle = job_title;
         const jobCategory = job_category;
-        const salaryRange = salary_range ;
+        const salaryRange = salary_range;
 
-        const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail };
+        const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail, salaryRange };
+
+
 
         try {
             const today = new Date()
@@ -35,13 +48,11 @@ const JobDetails = () => {
                 navigate('/')
                 toast.error('Can not Apply! Deadline passed!')
             } else if (hirerEmail === applierEmail) {
-                 navigate('/')
+                navigate('/')
                 toast.error('Can not apply in your own job!')
             }
             else {
-                const { data } = await axiosSecure.post(`/applied`, applyData);
-                navigate('/')
-                toast.success('Applied Successfully!')
+                await mutateAsync(applyData)
             }
         } catch (err) {
             console.log(err);

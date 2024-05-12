@@ -5,12 +5,26 @@ import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
     const { signIn, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const axiosSecure = useAxiosSecure(); 
+    const axiosSecure = useAxiosSecure();
+
+    const { mutateAsync: signInMutation } = useMutation({
+        mutationFn: async ({ email, password }) => {
+            const result = await signIn(email, password)
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email });
+            return data;
+        },
+        onSuccess: () => {
+            navigate(location?.state || '/');
+            toast.success('Log in successful!')
+        }
+
+    })
 
     const handleSignIn = async e => {
         e.preventDefault();
@@ -19,11 +33,7 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         try {
-            const result = await signIn(email, password)
-            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
-            // console.log(data); 
-            navigate(location?.state || '/');
-            toast.success('Log in successful!')
+            const data = await signInMutation({ email, password });
         } catch (err) {
             if (err.code) {
                 toast.error('Wrong Password')
@@ -34,13 +44,25 @@ const Login = () => {
     }
 
 
-    const handleGoogle = async () => {
-        try {
+    const { mutateAsync: googleMutation } = useMutation({
+        mutationFn: async () => {
             const result = await signInWithGoogle();
-            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
-            // console.log(data); 
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email });
+            return data;
+        },
+
+        onSuccess: () => {
             navigate(location?.state || '/');
             toast.success('Log in successful!')
+        }
+
+    })
+
+
+
+    const handleGoogle = async () => {
+        try {
+            const data = await googleMutation();
         } catch (err) {
             console.log(err);
         }

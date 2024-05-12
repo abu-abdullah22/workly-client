@@ -1,29 +1,33 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 const Alljobs = () => {
 
-    const { user } = useAuth() ;
-    const [jobs, setJobs] = useState([]);
+
     const axiosSecure = useAxiosSecure(); 
+    const [search, setSearch]= useState('')
 
-
-    useEffect(() => {
-        getData();
-    }, [user]);
-
-    const getData = async () => {
-        try {
-            const { data } = await axiosSecure(`${import.meta.env.VITE_API_URL}/jobs`);
-            setJobs(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+ const {data: jobs, isLoading} =  useQuery({
+        queryFn: ()=> getData(search),
+        queryKey: ['jobs'], 
+    })
+    
+    const getData = async (search) => {
+            const { data } = await axiosSecure(`/jobs?search=${search}`);
+            return data ;
+       
     };
 
-    console.log(jobs);
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setSearch(e.target.search.value);
+    };
+
+    if(isLoading) return <p>Loading ...</p>
+   
+
 
 
     return (
@@ -34,6 +38,10 @@ const Alljobs = () => {
                 </title>
             </Helmet>
           <div className="container mx-auto my-20 min-h-[80vh]">
+            <form onSubmit={handleSearch}>
+                <input className="border p-2 rounded-md mr-1" type="text" name="search" placeholder="enter job title" aria-label="Enter job title" />
+                <button type="submit" className="btn bg-[#74B366] text-white">Search</button>
+            </form>
           <div className="overflow-x-auto">
                 <table className="table">
                     <thead>
@@ -46,7 +54,7 @@ const Alljobs = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {jobs.map(job => (
+                        {jobs.filter((job) => job.job_title.toLowerCase().includes(search.toLowerCase())).map(job => (
                             <tr key={job._id}>
                                 <td>{job.job_title}</td>
                                 <td>{job.job_posting_date}</td>

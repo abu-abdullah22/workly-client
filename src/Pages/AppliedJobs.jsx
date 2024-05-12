@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
@@ -14,13 +14,6 @@ const AppliedJobs = () => {
     queryFn: ()=> getData(),
     queryKey : ['jobs']
    })
-
-    useEffect(() => {
-        getData();
-    }, [user]);
-
-
-
 
     const getData = async () => {
             const { data } = await axiosSecure(`/apply/${user?.email}`);

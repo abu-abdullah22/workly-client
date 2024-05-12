@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
 
 const Register = () => {
     const {createUser, signInWithGoogle, updateUserProfile, setUser} = useAuth()
@@ -11,6 +12,35 @@ const Register = () => {
     const location = useLocation();
     const axiosSecure = useAxiosSecure(); 
 
+
+    const {mutateAsync} = useMutation({
+        mutationFn: async({name, email, password, photo})=> {
+            const result = await createUser(email, password);
+            await updateUserProfile(name, photo);
+            setUser({...result, photoURL: photo, displayName: name });
+            return result ;
+        },
+        onSuccess : async (data)=> {   
+            const {name, email, photo} = data ;       
+           
+
+            const { data : jwtData } = await axiosSecure.post(`/jwt`, {email})
+       
+            navigate(location?.state || '/'); 
+
+            toast.success('Sign Up Successful!')
+        },
+        onError: (err) => {
+            if (err.code === 'auth/email-already-in-use') {
+                toast.error('Email address is already in use');
+            } else if (err.code === 'auth/weak-password') {
+                toast.error('Password is too weak');
+            } else {
+                console.error(err);
+                toast.error('An error occurred while signing up. Please try again later.');
+            }
+        }
+    })
     const handleSignUp = async e => {
         e.preventDefault();
         const form = e.target;
@@ -30,29 +60,35 @@ const Register = () => {
             return
         }
 
-        try {
-            const result = await createUser(email, password)
-            await updateUserProfile(name, photo)
-            setUser({ ...result?.user, photoURL: photo, displayName: name });
 
-            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
-            // console.log(data); 
-            navigate(location?.state || '/');
-            toast.success('Sign Up Successful!')
+        try {
+           await mutateAsync({name, email, password, photo})
         } catch (err) {
             console.log(err);
-            toast.error(err?.message)
+            toast.error('Error occured. Try again.')
         }
 
     }
 
-    const handleGoogle = async () => {
-        try {
+    const { mutateAsync: googleMutation } = useMutation({
+        mutationFn: async () => {
             const result = await signInWithGoogle();
-            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
-            // console.log(data); 
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email });
+            return data;
+        },
+
+        onSuccess: () => {
             navigate(location?.state || '/');
             toast.success('Log in successful!')
+        }
+
+    })
+
+
+
+    const handleGoogle = async () => {
+        try {
+            const data = await googleMutation();
         } catch (err) {
             console.log(err);
         }
