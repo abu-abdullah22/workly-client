@@ -12,7 +12,7 @@ import bg3 from '../assets/images/bg3.jpg'
 
 
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import Slide from './Slide';
 
 export default function App() {
@@ -27,8 +27,9 @@ export default function App() {
     <div className='py-12 px-8 container mx-auto'>
       <Swiper
         pagination={pagination}
-        modules={[Pagination]}
+        modules={[Pagination, Autoplay]}
         className="mySwiper"
+        autoplay={{ delay: 3000 }} 
       >
         <SwiperSlide><Slide image={bg1}></Slide></SwiperSlide>
         <SwiperSlide><Slide image={bg2}></Slide></SwiperSlide>
