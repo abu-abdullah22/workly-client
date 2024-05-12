@@ -1,13 +1,14 @@
-import { useContext, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { AuthContext } from "../Provider/AuthProvider";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import useAuth from "../Hook/useAuth";
 const UpdateJobs = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth() ;
     const [startDate, setStartDate] = useState(new Date());
     const [deadline, setDeadline] = useState(new Date());
     const navigate = useNavigate() ;

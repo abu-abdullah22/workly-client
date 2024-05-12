@@ -5,12 +5,14 @@ import { AuthContext } from "../Provider/AuthProvider";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const JobDetails = () => {
     const { user } = useContext(AuthContext);
     const job = useLoaderData();
     const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email } = job;
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure(); 
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -37,7 +39,7 @@ const JobDetails = () => {
                 toast.error('Can not apply in your own job!')
             }
             else {
-                const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/applied`, applyData);
+                const { data } = await axiosSecure.post(`/applied`, applyData);
                 navigate('/')
                 toast.success('Applied Successfully!')
             }

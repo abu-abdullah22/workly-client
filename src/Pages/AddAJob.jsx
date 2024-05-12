@@ -1,46 +1,49 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+import { useState } from "react";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
+import useAuth from "../Hook/useAuth";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useMutation } from "@tanstack/react-query";
 
 
 const AddAJob = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const [startDate, setStartDate] = useState(new Date());
     const [deadline, setDeadline] = useState(new Date());
-    const navigate = useNavigate() ;
+    const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure();
+
+
+    const { mutateAsync } = useMutation({
+        mutationFn: async (addData) => {
+            const {data} = await axiosSecure.post(`/jobs`, addData) ;
+        },
+        onSuccess : ()=> {
+            navigate('/my-jobs');
+            toast.success('Added successfully!')
+        }
+    })
 
     const handleAddJob = async e => {
-        e.preventDefault() ;
-        const form = e.target ;
-        const email = form.email.value ;
-        const name = form.name.value ;
-        const job_title = form.title.value ;
-        const description = form.description.value ;
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const name = form.name.value;
+        const job_title = form.title.value;
+        const description = form.description.value;
         const job_posting_date = startDate.toLocaleDateString();
-        const application_deadline = deadline.toLocaleDateString() ;
-        const job_category = form.jobCategory.value ;
-        const salary_range = form.salary.value ;
-        const image = form.banner.value ;
+        const application_deadline = deadline.toLocaleDateString();
+        const job_category = form.jobCategory.value;
+        const salary_range = form.salary.value;
+        const image = form.banner.value;
 
-        const addData = {name, job_title, description, job_posting_date, application_deadline, salary_range, job_category, image, email} ;
+        const addData = { name, job_title, description, job_posting_date, application_deadline, salary_range, job_category, image, email };
 
-        console.log(addData);
-
-        try{
-            const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/jobs`, addData) ;
-           navigate('/my-jobs');
-           toast.success('Job added succcessfully!')
-        } catch(err) {
-            console.log(err);
-        }
-
-
+        mutateAsync(addData);
 
     }
     return (
@@ -106,7 +109,7 @@ const AddAJob = () => {
                         <label className="label">
                             <span className="label-text">Job Applicants :</span>
                         </label>
-                        <input type="number" placeholder="applicants" name="applicants" defaultValue={0} className="input input-bordered" readOnly/>
+                        <input type="number" placeholder="applicants" name="applicants" defaultValue={0} className="input input-bordered" readOnly />
                     </div>
 
                     <div className="flex justify-between">
@@ -114,7 +117,7 @@ const AddAJob = () => {
                             <label className="label">
                                 <span className="label-text">job Posting Date</span>
                             </label>
-                            <DatePicker className="border p-2 rounded-md" selected={startDate} onChange={(date) => setStartDate(date)}  readOnly/>
+                            <DatePicker className="border p-2 rounded-md" selected={startDate} onChange={(date) => setStartDate(date)} readOnly />
 
                         </div>
                         <div className="form-control">

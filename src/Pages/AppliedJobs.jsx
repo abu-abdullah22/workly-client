@@ -1,55 +1,58 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { AuthContext } from "../Provider/AuthProvider";
-import axios from "axios";
+import useAuth from "../Hook/useAuth";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const AppliedJobs = () => {
-    const { user } = useContext(AuthContext);
-    const [jobs, setJobs] = useState([]);
-    const [filteredJobs, setFilteredJobs] = useState([]);
+    const { user } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState("");
+    const axiosSecure = useAxiosSecure();
+
+
+  const {data: jobs, isLoading} =  useQuery({
+    queryFn: ()=> getData(),
+    queryKey : ['jobs']
+   })
 
     useEffect(() => {
         getData();
     }, [user]);
 
-    useEffect(() => {
-        if (selectedCategory) {
-            const filtered = jobs.filter(job => job.jobCategory === selectedCategory);
-            setFilteredJobs(filtered);
-        } else {
-            setFilteredJobs(jobs);
-        }
-    }, [selectedCategory, jobs]);
+
+
 
     const getData = async () => {
-        try {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/apply/${user?.email}`);
-            setJobs(data);
-            setFilteredJobs(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+            const { data } = await axiosSecure(`/apply/${user?.email}`);
+            return data ;   
     };
+
+    const filteredJobs = selectedCategory
+        ? jobs.filter((job) => job.jobCategory === selectedCategory)
+        : jobs;
+
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
     };
+
+    if(isLoading) return <p>Loading ...</p>
+   
 
     return (
         <div>
             <Helmet>
                 <title>Applied Jobs</title>
             </Helmet>
-            <div className="h-[80vh] container mx-auto">
-                <h2 className="text-3xl text-center my-12">My added jobs</h2>
+            <div className="container mx-auto my-20 lg:min-h-[80vh]">
+                <h2 className="text-3xl text-center my-12">My Applied jobs</h2>
                 <div className="flex justify-center mb-4">
                     <select id="category" value={selectedCategory} onChange={handleCategoryChange} className="border p-1">
                         <option value="">All Categories</option>
                         <option value="remote">Remote</option>
-                        <option value="onsite">Onsite</option>
+                        <option value="on_site">Onsite</option>
                         <option value="hybrid">Hybrid</option>
-                        <option value="part-time">Part-time</option>
+                        <option value="part_time">Part-time</option>
                     </select>
                 </div>
                 <div className="overflow-x-auto">
@@ -64,7 +67,7 @@ const AppliedJobs = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredJobs.map(job => (
+                            {filteredJobs?.map(job => (
                                 <tr key={job._id}>
                                     <td>{job.jobTitle}</td>
                                     <td>{job.jobCategory}</td>

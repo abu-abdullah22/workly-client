@@ -1,22 +1,25 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+/* eslint-disable no-unused-vars */
+import {  useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet";
+import useAuth from "../Hook/useAuth";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 
 
 const Myjobs = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth() ;
     const [jobs, setJobs] = useState();
+    const axiosSecure = useAxiosSecure(); 
     useEffect(() => {
         getData();
     }, [user]);
 
     const getData = async () => {
-        const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs/${user?.email}`);
+  
+        const { data } = await axiosSecure(`/jobs/${user?.email}`);
         setJobs(data);
     }
 
@@ -34,7 +37,7 @@ const Myjobs = () => {
                 confirmButtonText: 'Yes, delete it!'
             });
             if (result.isConfirmed) {
-                const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/job/${id}`);
+                const { data } = await axiosSecure.delete(`/job/${id}`);
                 toast.success('Deleted Successfully!');
                 getData();
             }
@@ -47,7 +50,7 @@ const Myjobs = () => {
 
 
     return (
-        <div className="h-[80vh] container mx-auto">
+        <div className="min-h-[80vh] container mx-auto my-20">
             <Helmet><title>My Jobs</title></Helmet>
             <h2 className="text-3xl text-center my-12">My added jobs</h2>
             <div className="overflow-x-auto">

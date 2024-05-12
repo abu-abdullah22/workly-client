@@ -1,14 +1,15 @@
-import { useContext } from "react";
+/* eslint-disable no-unused-vars */
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import useAuth from "../Hook/useAuth";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const Register = () => {
-
-    const { createUser, signInWithGoogle, updateUserProfile, setUser } = useContext(AuthContext);
+    const {createUser, signInWithGoogle, updateUserProfile, setUser} = useAuth()
     const navigate = useNavigate();
-    const location = useLocation() ;
+    const location = useLocation();
+    const axiosSecure = useAxiosSecure(); 
 
     const handleSignUp = async e => {
         e.preventDefault();
@@ -18,10 +19,24 @@ const Register = () => {
         const password = form.password.value;
         const photo = form.photo.value;
 
+        if (password.length < 6) {
+          toast.error('Password must be 6 characters')
+            return
+        } else if (!/[a-z]/.test(password)) {
+            toast.error('Password must contain a lower letter')
+            return
+        } else if (!/[A-Z]/.test(password)) {
+            toast.error('Password must contain an uppercase letter')
+            return
+        }
+
         try {
-            await createUser(email, password)
+            const result = await createUser(email, password)
             await updateUserProfile(name, photo)
-            setUser({ photoURL: photo, displayName: name });
+            setUser({ ...result?.user, photoURL: photo, displayName: name });
+
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
+            // console.log(data); 
             navigate(location?.state || '/');
             toast.success('Sign Up Successful!')
         } catch (err) {
@@ -33,7 +48,9 @@ const Register = () => {
 
     const handleGoogle = async () => {
         try {
-            await signInWithGoogle();
+            const result = await signInWithGoogle();
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
+            // console.log(data); 
             navigate(location?.state || '/');
             toast.success('Log in successful!')
         } catch (err) {

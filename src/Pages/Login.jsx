@@ -1,33 +1,44 @@
+/* eslint-disable no-unused-vars */
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const Login = () => {
     const { signIn, signInWithGoogle } = useContext(AuthContext);
-    const navigate = useNavigate() ;
+    const navigate = useNavigate();
     const location = useLocation();
+    const axiosSecure = useAxiosSecure(); 
 
     const handleSignIn = async e => {
-        e.preventDefault() ;
+        e.preventDefault();
 
-        const form = e.target ;
-        const email = form.email.value ;
-        const password = form.password.value ;
-        try{
-            await signIn(email, password)
-            navigate(location?.state || '/') ;
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        try {
+            const result = await signIn(email, password)
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
+            // console.log(data); 
+            navigate(location?.state || '/');
             toast.success('Log in successful!')
         } catch (err) {
-            console.log(err);
+            if (err.code) {
+                toast.error('Wrong Password')
+            } else {
+                toast.error('Error loggin in')
+            }
         }
     }
 
 
     const handleGoogle = async () => {
-        try{
-            await signInWithGoogle() ;
+        try {
+            const result = await signInWithGoogle();
+            const { data } = await axiosSecure.post(`/jwt`, { email: result?.user?.email })
+            // console.log(data); 
             navigate(location?.state || '/');
             toast.success('Log in successful!')
         } catch (err) {
@@ -42,11 +53,11 @@ const Login = () => {
             <form onSubmit={handleSignIn} className="space-y-6">
                 <div className="space-y-1 text-sm">
                     <label htmlFor="email" className="block dark:text-gray-600">email</label>
-                    <input type="email" name="email" id="email" placeholder="email" className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                    <input type="email" name="email" id="email" placeholder="email" className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" required />
                 </div>
                 <div className="space-y-1 text-sm">
                     <label htmlFor="password" className="block dark:text-gray-600">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password" className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
+                    <input type="password" name="password" id="password" placeholder="Password" className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" required />
 
                 </div>
                 <button className="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600 btn">Sign in</button>
