@@ -2,33 +2,43 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import axios from "axios";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
+
+
 const UpdateJobs = () => {
     const { user } = useAuth();
     const [startDate, setStartDate] = useState(new Date());
     const [deadline, setDeadline] = useState(new Date());
     const navigate = useNavigate();
-    const job = useLoaderData();
+    const { id } = useParams();
+    // console.log(id);
     const axiosSecure = useAxiosSecure();
-
-    const { job_title, salary_range, job_category, description, image, _id } = job;
+    const location = useLocation() ;
+    const { jobData } = location.state;
+    console.log(
+        jobData
+    );
+   
 
 
     const { mutateAsync } = useMutation({
         mutationFn: async (addData) => {
-            await axiosSecure.put(`/job/${_id}`, addData);
+            await axiosSecure.put(`/job/${id}`, addData);
         },
         onSuccess: () => {
             navigate('/my-jobs');
             toast.success('Updated succcessfully!')
         }
     })
+
+   
+
     const handleUpdate = async e => {
         e.preventDefault();
         const form = e.target;
@@ -54,6 +64,16 @@ const UpdateJobs = () => {
         }
 
     }
+
+    
+
+
+    
+
+
+
+
+
     return (
         <div className="xl:max-w-3xl p-4 shadow-md rounded-md dark:bg-gray-50 dark:text-gray-800 mx-auto my-12">
             <Helmet><title>Update</title></Helmet>
@@ -74,17 +94,17 @@ const UpdateJobs = () => {
                     <label className="label">
                         <span className="label-text">Job Title</span>
                     </label>
-                    <input type="text" placeholder="job title" name="title" className="input input-bordered" defaultValue={job_title} required />
+                    <input type="text" placeholder="job title" name="title" className="input input-bordered" defaultValue={jobData.job_title} required />
                 </div>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Job Banner (PhotoURL)</span>
                     </label>
-                    <input type="text" placeholder="job banner" name="banner" className="input input-bordered" defaultValue={image} required />
+                    <input type="text" placeholder="job banner" name="banner" className="input input-bordered" defaultValue={jobData.image} required />
                 </div>
                 <div className="form-control">
                     <select
-                        name="jobCategory" defaultValue={job_category} required
+                        name="jobCategory" defaultValue={jobData.job_category} required
                     >
                         <option value="">Select category</option>
                         <option value="On Site">On Site</option>
@@ -97,13 +117,13 @@ const UpdateJobs = () => {
                     <label className="label">
                         <span className="label-text">Description [within 150 letters]</span>
                     </label>
-                    <input type="text" placeholder="description" name="description" defaultValue={description} className="input input-bordered" required />
+                    <input type="text" placeholder="description" name="description" defaultValue={jobData.description} className="input input-bordered" required />
                 </div>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Salary Range</span>
                     </label>
-                    <input type="text" placeholder="salary range" name="salary" className="input input-bordered" defaultValue={salary_range} required />
+                    <input type="text" placeholder="salary range" name="salary" className="input input-bordered" defaultValue={jobData.salary_range} required />
                 </div>
                 <div className="flex justify-between">
                     <div className="form-control">

@@ -88,7 +88,7 @@ const Myjobs = () => {
                                     <td>{job.salary_range}</td>
                                     <td>{job.job_posting_date}</td>
                                     <td>{job.application_deadline}</td>
-                                    <td><Link to={`/update/${job._id}`}><button className="btn">Edit</button></Link></td>
+                                    <td><Link to={`/update/${job._id}`} state={{ jobData: job }}><button className="btn">Edit</button></Link></td>
                                     <td><button onClick={() => handleDelete(job._id)} className="btn">X</button></td>
                                 </tr>
                             )
