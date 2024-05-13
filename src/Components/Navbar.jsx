@@ -32,7 +32,7 @@ const Navbar = () => {
     )
 
     return (
-        <div className="navbar bg-base-100 lg:px-10 pt-4 container mx-auto">
+        <div className="navbar sticky top-0 bg-[#4E67BE] lg:px-10 pt-4 z-50 shadow-lg">
             <div className="navbar-start">
                 <div className="dropdown z-50">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -63,7 +63,7 @@ const Navbar = () => {
 
                 {
                     user && <div>
-                        <button onClick={handleLogOut} className="ml-2 btn bg-[#f5baa3] text-white">Log Out</button>
+                        <button onClick={handleLogOut} className="ml-2 btn bg-[#f5baa3] text-white border-none">Log Out</button>
                     </div>
                 }
 

@@ -3,6 +3,12 @@ import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { PDFDownloadLink, PDFViewer} from "@react-pdf/renderer";
+import MyDocument from "../Components/MyDocument";
+
+
+
+
 
 const AppliedJobs = () => {
     const { user } = useAuth();
@@ -10,14 +16,15 @@ const AppliedJobs = () => {
     const axiosSecure = useAxiosSecure();
 
 
-  const {data: jobs, isLoading} =  useQuery({
-    queryFn: ()=> getData(),
-    queryKey : ['jobs']
-   })
+
+    const { data: jobs, isLoading } = useQuery({
+        queryFn: () => getData(),
+        queryKey: ['jobs']
+    })
 
     const getData = async () => {
-            const { data } = await axiosSecure(`/apply/${user?.email}`);
-            return data ;   
+        const { data } = await axiosSecure(`/apply/${user?.email}`);
+        return data;
     };
 
     const filteredJobs = selectedCategory
@@ -29,15 +36,15 @@ const AppliedJobs = () => {
         setSelectedCategory(e.target.value);
     };
 
-    if(isLoading) return <p>Loading ...</p>
-   
+    if (isLoading) return <p>Loading ...</p>
+
 
     return (
         <div>
             <Helmet>
                 <title>Applied Jobs</title>
             </Helmet>
-            <div className="container mx-auto my-20 lg:min-h-[80vh]">
+         <div className="container mx-auto my-20 lg:min-h-[80vh]">
                 <h2 className="text-3xl text-center my-12">My Applied jobs</h2>
                 <div className="flex justify-center mb-4">
                     <select id="category" value={selectedCategory} onChange={handleCategoryChange} className="border p-1">
@@ -48,7 +55,8 @@ const AppliedJobs = () => {
                         <option value="part_time">Part-time</option>
                     </select>
                 </div>
-                <div className="overflow-x-auto">
+           
+                <div className="overflow-x-auto" >
                     <table className="table">
                         <thead>
                             <tr>
@@ -72,7 +80,13 @@ const AppliedJobs = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>       
+
+         <PDFDownloadLink document={<MyDocument  jobs={filteredJobs} />} fileName="example.pdf">
+      {({ loading}) =>
+        loading ? <button>Loading document... </button> : <button className="btn bg-blue-500 text-white my-5">Download The File</button>
+      }
+    </PDFDownloadLink>
         </div>
     );
 };
