@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import Carou from '../Components/Carou'
 import TabSection from '../Components/TabSection';
 import Subs from '../Components/Subs';
+import Review from '../Components/Review';
 const Home = () => {
   
     return (
@@ -24,6 +25,7 @@ const Home = () => {
             
                 <TabSection />
                 <Subs></Subs>
+                <Review></Review>
             </motion.div>
 
 

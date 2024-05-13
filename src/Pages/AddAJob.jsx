@@ -41,7 +41,7 @@ const AddAJob = () => {
         const salary_range = form.salary.value;
         const image = form.banner.value;
 
-        const addData = { name, job_title, description, job_posting_date, application_deadline, salary_range, job_category, image, email };
+        const addData = { name, job_title, description, job_posting_date, application_deadline, salary_range, job_category, image, email, job_applicants_number : 0 };
 
         mutateAsync(addData);
 
@@ -81,7 +81,7 @@ const AddAJob = () => {
                         </label>
                         <input type="text" placeholder="job banner" name="banner" className="input input-bordered" required />
                     </div>
-                    <div className="form-control">
+                    <div className="form-control border p-1">
                         <select
                             name="jobCategory" required
                         >
@@ -105,12 +105,12 @@ const AddAJob = () => {
                         <input type="text" placeholder="salary range" name="salary" className="input input-bordered" required />
                     </div>
 
-                    <div className="form-control">
+                    {/* <div className="form-control">
                         <label className="label">
                             <span className="label-text">Job Applicants :</span>
                         </label>
                         <input type="number" placeholder="applicants" name="applicants" defaultValue={0} className="input input-bordered" readOnly />
-                    </div>
+                    </div> */}
 
                     <div className="flex justify-between">
                         <div className="form-control">

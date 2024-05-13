@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 const JobDetails = () => {
     const { user } = useContext(AuthContext);
     const job = useLoaderData();
-    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email } = job;
+    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email, _id} = job;
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
 
@@ -22,7 +22,14 @@ const JobDetails = () => {
         onSuccess : ()=> {
             navigate('/')
             toast.success('Applied Successfully!')
-        } 
+        } ,
+        onError:(error)=>{
+            if(error.response && error.response.status === 400){
+                navigate('/appliedJobs')
+                toast.error('You have already applied')
+
+            }
+        }
     })
 
     const handleSubmit = async e => {
@@ -37,7 +44,7 @@ const JobDetails = () => {
         const jobCategory = job_category;
         const salaryRange = salary_range;
 
-        const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail, salaryRange };
+        const applyData = { applierName, applierEmail, resume, hirerName, jobTitle, jobCategory, hirerEmail, salaryRange, jobId : _id};
 
 
 
