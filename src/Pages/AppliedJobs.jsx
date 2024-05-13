@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import useAxiosSecure from "../Hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { PDFDownloadLink, PDFViewer} from "@react-pdf/renderer";
+import { PDFDownloadLink} from "@react-pdf/renderer";
 import MyDocument from "../Components/MyDocument";
 
 

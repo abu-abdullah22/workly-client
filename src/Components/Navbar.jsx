@@ -69,7 +69,7 @@ const Navbar = () => {
 
                 {
                     !user && <div>
-                        <Link to={'/login'}><button className="btn bg-[#e08686] text-white">Login</button></Link>
+                        <Link to={'/login'}><button className="btn bg-[#e08686] text-white border-none">Login</button></Link>
                     </div>
                 }
             </div>

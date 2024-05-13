@@ -1,37 +1,34 @@
-import { motion } from 'framer-motion';
+import { motion} from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import Carou from '../Components/Carou'
 import TabSection from '../Components/TabSection';
+import Subs from '../Components/Subs';
 const Home = () => {
+  
     return (
-      <div>
-         <Helmet><title>Home</title></Helmet>
+        <motion.div  style={{ overflowY: "scroll", height: '80vh' }} >
+            <Helmet><title>Home</title></Helmet>
 
-          <motion.div  initial={{ scale: 0 }}
-        animate={{ rotate: 0, scale: 1 }}
-        transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20
-        }}>
-            {/* <motion.div
-                initial={{ scale: 0 }}
-                animate={{ rotate: 180, scale: 1 }}
+            <motion.div initial={{ scale: 0 }}
+                animate={{ rotate: 0, scale: 1 }}
                 transition={{
                     type: "spring",
                     stiffness: 260,
                     damping: 20
-                }}
-                
-            /> */}
-           
-           <Carou />
+                }}>
 
-        </motion.div>
-        <motion.div >
-        <TabSection />
-        </motion.div>
-      </div>
+                <Carou />
+
+            </motion.div>
+
+            
+                <TabSection />
+                <Subs></Subs>
+            </motion.div>
+
+
+
+
     );
 };
 
