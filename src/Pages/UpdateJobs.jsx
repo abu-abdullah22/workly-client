@@ -19,10 +19,20 @@ const UpdateJobs = () => {
     const { id } = useParams();
     // console.log(id);
     const axiosSecure = useAxiosSecure();
-    const location = useLocation() ;
-    const { jobData } = location.state;
+    // const location = useLocation() ;
+    // const { jobData } = location.state;
   
-   
+    const { data: jobData, isLoading, isError } = useQuery({
+        queryKey: ["job", id],
+        queryFn: async () => {
+            const { data } = await axiosSecure.get(`/job/${id}`);
+            return data;
+        }
+    });
+
+
+
+    // const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email, _id} = jobData || {};
 
 
     const { mutateAsync } = useMutation({
@@ -65,7 +75,8 @@ const UpdateJobs = () => {
 
     
 
-
+    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <div>Error fetching job details.</div>;
     
 
 

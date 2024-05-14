@@ -1,19 +1,30 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAxiosSecure from "../Hook/useAxiosSecure";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const JobDetails = () => {
     const { user } = useContext(AuthContext);
-    const job = useLoaderData();
-    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email, _id} = job;
+    const { id: jobId } = useParams();
+
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
+
+    const { data: job, isLoading, isError } = useQuery({
+        queryFn: async () => {
+            const { data } = await axiosSecure.get(`/job/${jobId}`);
+            return data;
+        },
+        queryKey: ["job", jobId],
+    });
+
+
+    const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email, _id} = job || {};
+
 
  const {mutateAsync} =   useMutation({
         mutationFn: async (applyData)=> {
@@ -67,6 +78,14 @@ const JobDetails = () => {
 
 
     }
+
+
+    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <div>Error fetching job details.</div>;
+
+
+
+
     return (
         <div className="max-w-lg p-4 shadow-md dark:bg-gray-50 dark:text-gray-800 container mx-auto my-20 min-h-[calc(100vh-582px)]">
             <Helmet><title>Workly | Job Details</title></Helmet>
