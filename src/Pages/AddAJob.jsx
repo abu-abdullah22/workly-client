@@ -49,7 +49,7 @@ const AddAJob = () => {
     return (
         <div>
             <Helmet>
-                <title>Add A Job</title>
+                <title>Workly | Add A Job</title>
             </Helmet>
             <div className="text-center space-y-5 my-8">
                 <h3 className="text-3xl">  Add A Job Opportunity</h3>

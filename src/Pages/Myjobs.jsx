@@ -62,7 +62,7 @@ const Myjobs = () => {
 
     return (
         <div className="min-h-[80vh] container mx-auto my-20">
-            <Helmet><title>My Jobs</title></Helmet>
+            <Helmet><title>Workly | My Jobs</title></Helmet>
             <h2 className="text-3xl text-center my-12">My added jobs</h2>
             <div className="overflow-x-auto">
                 <table className="table">

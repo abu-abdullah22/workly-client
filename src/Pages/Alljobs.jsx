@@ -35,7 +35,7 @@ const Alljobs = () => {
         <div>
             <Helmet>
                 <title>
-                    All Jobs
+                  Workly | All Jobs
                 </title>
             </Helmet>
             <div className="container mx-auto my-20 min-h-[80vh]">

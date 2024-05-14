@@ -8,7 +8,7 @@ const Home = () => {
   
     return (
         <motion.div  style={{ overflowY: "scroll", height: '80vh' }} >
-            <Helmet><title>Home</title></Helmet>
+            <Helmet><title>Workly | Home</title></Helmet>
 
             <motion.div initial={{ scale: 0 }}
                 animate={{ rotate: 0, scale: 1 }}

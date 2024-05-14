@@ -42,7 +42,7 @@ const AppliedJobs = () => {
     return (
         <div>
             <Helmet>
-                <title>Applied Jobs</title>
+                <title>Workly | Applied Jobs</title>
             </Helmet>
          <div className="container mx-auto my-20 lg:min-h-[80vh]">
                 <h2 className="text-3xl text-center my-12">My Applied jobs</h2>

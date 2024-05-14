@@ -74,7 +74,7 @@ const UpdateJobs = () => {
 
     return (
         <div className="xl:max-w-3xl p-4 shadow-md rounded-md dark:bg-gray-50 dark:text-gray-800 mx-auto my-12">
-            <Helmet><title>Update</title></Helmet>
+            <Helmet><title>Workly | Update</title></Helmet>
             <form onSubmit={handleUpdate} className="w-full space-y-5">
                 <div className="form-control">
                     <label className="label">

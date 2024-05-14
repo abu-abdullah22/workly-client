@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const Blogs = () => {
     const { data, isLoading, isError } = useQuery({
@@ -16,6 +17,7 @@ const Blogs = () => {
 
     const openModal = (blog) => {
         setSelectedBlog(blog);
+        document.querySelector(".modal-content").scrollTop = 0;
     };
 
     const closeModal = () => {
@@ -32,7 +34,7 @@ const Blogs = () => {
 
     return (
         <div className="min-h-screen">
-            <Helmet title="Blogs" />
+            <Helmet title="Workly | Blogs" />
             <div className="container mx-auto py-8">
                 <h1 className="text-3xl font-bold text-center mb-8">Latest Blogs ({data.length})</h1>
 
@@ -59,13 +61,24 @@ const Blogs = () => {
                 </div>
 
                 {selectedBlog && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                        <div className={`bg-white p-8 rounded-lg ${selectedBlog.description.length > 500 ? 'max-w-3xl' : 'max-w-md'}`}>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-y-auto"
+                    >
+                        <motion.div
+                            initial={{ y: -50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -50, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="bg-white p-8 modal-content rounded-lg w-full max-w-3xl"
+                        >
                             <h2 className="text-2xl font-bold mb-4">{selectedBlog.title}</h2>
                             <p className="text-gray-800">{selectedBlog.description}</p>
                             <button className="btn text-white border-none bg-[#74b366] mt-4" onClick={closeModal}>Close</button>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
                 )}
             </div>
         </div>
@@ -73,3 +86,4 @@ const Blogs = () => {
 };
 
 export default Blogs;
+
