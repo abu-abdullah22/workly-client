@@ -2,13 +2,13 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import {  useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import useAuth from "../Hook/useAuth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../Hook/useAxiosSecure";
-import axios from "axios";
+
 
 
 const UpdateJobs = () => {
@@ -17,10 +17,8 @@ const UpdateJobs = () => {
     const [deadline, setDeadline] = useState(new Date());
     const navigate = useNavigate();
     const { id } = useParams();
-    // console.log(id);
     const axiosSecure = useAxiosSecure();
-    // const location = useLocation() ;
-    // const { jobData } = location.state;
+    
   
     const { data: jobData, isLoading, isError } = useQuery({
         queryKey: ["job", id],
@@ -29,10 +27,6 @@ const UpdateJobs = () => {
             return data;
         }
     });
-
-
-
-    // const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, description, image, email, _id} = jobData || {};
 
 
     const { mutateAsync } = useMutation({

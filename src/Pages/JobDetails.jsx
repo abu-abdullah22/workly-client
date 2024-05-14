@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
@@ -114,12 +114,11 @@ const JobDetails = () => {
 
                         < button className="btn bg-[#74b366] text-white" onClick={() => document.getElementById('my_modal_5').showModal()}>Apply</button >
                         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-                            <div className="modal-box w-[700px]">
+                            <div className="modal-box w-full sm:w-[700px] max-w-[90%] mx-auto">
                                 <h3 className="font-bold text-lg">Apply</h3>
                                 <p className="py-4">Press Submit to confirm apply!</p>
-                                <div className="modal-action">
+                                <div className="modal-action flex flex-col">
                                     <form onSubmit={handleSubmit} method="dialog" className="w-full">
-                                        {/* if there is a button in form, it will close the modal */}
                                         <div className="form-control">
                                             <label className="label">
                                                 <span className="label-text">Name</span>
