@@ -21,9 +21,7 @@ const UpdateJobs = () => {
     const axiosSecure = useAxiosSecure();
     const location = useLocation() ;
     const { jobData } = location.state;
-    console.log(
-        jobData
-    );
+  
    
 
 
@@ -103,7 +101,7 @@ const UpdateJobs = () => {
                     <input type="text" placeholder="job banner" name="banner" className="input input-bordered" defaultValue={jobData.image} required />
                 </div>
                 <div className="form-control">
-                    <select
+                    <select className="border p-1"
                         name="jobCategory" defaultValue={jobData.job_category} required
                     >
                         <option value="">Select category</option>
@@ -142,7 +140,7 @@ const UpdateJobs = () => {
                     </div>
                 </div>
                 <div className="form-control mt-6">
-                    <button type="submit" className="btn btn-primary">Update</button>
+                    <button type="submit" className="btn bg-blue-500">Update</button>
                 </div>
 
             </form>

@@ -120,9 +120,9 @@ const JobDetails = () => {
                                             <input type="text" placeholder="resume" name="resume" className="input input-bordered" required />
                                         </div>
                                         <div className="form-control mt-6">
-                                            <button type="submit" className="btn btn-primary">Submit</button>
+                                            <button type="submit" className="btn bg-blue-500 text-white">Submit</button>
                                         </div>
-                                        <button type="button" className="btn btn-error mt-5 w-full" onClick={() => document.getElementById('my_modal_5').close()}>Cancel</button>
+                                        <button type="button" className="btn btn-error mt-5 w-full text-white" onClick={() => document.getElementById('my_modal_5').close()}>Cancel</button>
                                     </form>
                                 </div>
                             </div>

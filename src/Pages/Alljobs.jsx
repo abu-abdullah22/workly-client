@@ -40,7 +40,7 @@ const Alljobs = () => {
             </Helmet>
             <div className="container mx-auto my-20 min-h-[80vh]">
                 <form onSubmit={handleSearch}>
-                    <input className="border p-2 rounded-md mr-1" type="text" name="search" placeholder="enter job title" aria-label="Enter job title" />
+                    <input className="border p-2 rounded-md mr-1" type="text" name="search" placeholder="Enter Job Title" aria-label="Enter job title" />
                     <button type="submit" className="btn bg-[#74B366] text-white">Search</button>
                 </form>
                 <div className="overflow-x-auto">

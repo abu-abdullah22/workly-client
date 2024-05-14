@@ -49,7 +49,7 @@ const AddAJob = () => {
     return (
         <div>
             <Helmet>
-                <title>Add A JOb</title>
+                <title>Add A Job</title>
             </Helmet>
             <div className="text-center space-y-5 my-8">
                 <h3 className="text-3xl">  Add A Job Opportunity</h3>
@@ -105,12 +105,6 @@ const AddAJob = () => {
                         <input type="text" placeholder="salary range" name="salary" className="input input-bordered" required />
                     </div>
 
-                    {/* <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Job Applicants :</span>
-                        </label>
-                        <input type="number" placeholder="applicants" name="applicants" defaultValue={0} className="input input-bordered" readOnly />
-                    </div> */}
 
                     <div className="flex justify-between">
                         <div className="form-control">
@@ -129,7 +123,7 @@ const AddAJob = () => {
                         </div>
                     </div>
                     <div className="form-control mt-6">
-                        <button type="submit" className="btn btn-primary">Add</button>
+                        <button type="submit" className="btn bg-blue-500 text-white">Add</button>
                     </div>
 
                 </form>
