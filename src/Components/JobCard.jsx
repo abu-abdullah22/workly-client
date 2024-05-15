@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../Hook/useAuth";
+import toast from "react-hot-toast";
 
 /* eslint-disable react/prop-types */
 const JobCard = ({ job }) => {
     const { name, job_title, job_posting_date, application_deadline, salary_range, job_applicants_number, job_category, _id } = job;
+
+    const {user} = useAuth() ;
+    const navigate = useNavigate() ;
+
+    const handleDetails = () => {
+        if(!user){
+            toast.error('You have to log in first to view details') ;
+            navigate('/login') ;
+        }
+    }
     return (
         <div className="max-w-lg p-4 shadow-md dark:bg-gray-50 dark:text-gray-800 rounded-md">
             <div className="flex justify-between pb-4 border-bottom">
@@ -10,7 +22,7 @@ const JobCard = ({ job }) => {
                     {name}
 
                 </div>
-                <Link to={`/job/${_id}`} className="btn bg-[#74B366] text-white border-none">View Details</Link>
+                <Link onClick={handleDetails} to={`/job/${_id}`} className="btn bg-[#74B366] text-white border-none">View Details</Link>
             </div>
             <div className="space-y-4">
                 <div className="space-y-2">

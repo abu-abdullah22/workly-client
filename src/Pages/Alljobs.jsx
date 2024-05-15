@@ -1,13 +1,17 @@
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAxiosSecure from "../Hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import {  useState } from "react";
+import useAuth from "../Hook/useAuth";
+import toast from "react-hot-toast";
 const Alljobs = () => {
 
 
     const axiosSecure = useAxiosSecure();
     const [search, setSearch] = useState('');
+    const {user} = useAuth() ;
+    const navigate = useNavigate() ;
   
  
 
@@ -25,6 +29,13 @@ const Alljobs = () => {
         e.preventDefault();
         setSearch(e.target.search.value);
     };
+
+    const handleDetails = () => {
+        if(!user){
+            toast.error('You have to log in first to view details') ;
+            navigate('/login') ;
+        }
+    }
 
     if (isLoading) return <p>Loading ...</p>
 
@@ -61,7 +72,7 @@ const Alljobs = () => {
                                     <td>{job.job_posting_date}</td>
                                     <td>{job.application_deadline}</td>
                                     <td>{job.salary_range}</td>
-                                    <td><Link to={`/job/${job._id}`}><button className="btn bg-[#74B366] text-white">Details</button></Link></td>
+                                    <td><Link to={`/job/${job._id}`} onClick={handleDetails}><button className="btn bg-[#74B366] text-white">Details</button></Link></td>
                                 </tr>
                             ))}
                         </tbody>

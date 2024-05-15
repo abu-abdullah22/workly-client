@@ -8,6 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const [theme, setTheme] = useState("light");
+    
     useEffect(() => {
         localStorage.setItem("theme", theme);
         const localTheme = localStorage.getItem("theme");
