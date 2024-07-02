@@ -11,6 +11,15 @@ Here are some key features of our platform:
 - **Job Adding and Editing Options**: Seamlessly add and edit job postings with our intuitive job management tools. Whether you're a recruiter looking to post new job opportunities or an employer updating existing listings, Workly provides easy-to-use options for managing job postings.
 
 
+**Technology Used**:
+- React JS
+- Tailwind CSS with DaisyUI and Mamaba UI
+- Firebase
+- Express JS
+- JWT
+- MongoDB
+- Stripe
+
 **Packages Used:**
 - [@react-pdf/renderer](https://www.npmjs.com/package/@react-pdf/renderer)
 - [@tanstack/react-query](https://www.npmjs.com/package/@tanstack/react-query)
