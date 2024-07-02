@@ -1,6 +1,6 @@
 ## [Workly](https://workly-4616b.web.app/)
 
-**Job Seeking Platform(Category 0003)**
+**Job Seeking Platform**
 
 Here are some key features of our platform:
 
