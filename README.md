@@ -26,3 +26,20 @@ Here are some key features of our platform:
 - [react-tabs](https://www.npmjs.com/package/react-tabs)
 - [sweetalert2](https://www.npmjs.com/package/sweetalert2)
 - [swiper](https://www.npmjs.com/package/swiper)
+
+
+
+## Running the Project Locally
+
+To run the project locally, follow these steps:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/newswave.git
+   cd newswave
+2. **Install npm**
+   ```bash
+   npm install
+3. **Run locally** 
+   ```bash
+   npm run dev
