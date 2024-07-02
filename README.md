@@ -13,12 +13,11 @@ Here are some key features of our platform:
 
 **Technology Used**:
 - React JS
-- Tailwind CSS with DaisyUI and Mamaba UI
+- Tailwind CSS with DaisyUI 
 - Firebase
 - Express JS
 - JWT
 - MongoDB
-- Stripe
 
 **Packages Used:**
 - [@react-pdf/renderer](https://www.npmjs.com/package/@react-pdf/renderer)
