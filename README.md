@@ -4,11 +4,10 @@
 
 Here are some key features of our platform:
 
-- **Advanced Search Filters**: Utilize comprehensive search filters on the All Jobs page, including job title, location, industry, and salary range, to refine your job search and find the perfect match for your skills and preferences.
-- **Download Option for Applied Jobs**: Easily download information about the jobs you've applied for. Stay organized and keep track of your job applications by saving details such as job descriptions, application dates, and company information for future reference.
-- **Jobs by Category**: Explore job listings categorized by remote, onsite, part-time, or hybrid options directly on the home page. Quickly find the type of job that suits your lifestyle and preferences without navigating through multiple pages.
-- **Interactive UI with Framer Motion**: Experience a visually stunning home page with interactive animations and transitions powered by Framer Motion. Enjoy a seamless and engaging user interface that enhances your browsing experience.
-- **Job Adding and Editing Options**: Seamlessly add and edit job postings with our intuitive job management tools. Whether you're a recruiter looking to post new job opportunities or an employer updating existing listings, Workly provides easy-to-use options for managing job postings.
+- **Advanced Search Filters**: Utilize comprehensive search filters on the All Jobs page with title, to refine your job search and find the perfect match for your skills and preferences.
+- **Download Option for Applied Jobs**: Easily download information about the jobs you've applied for. Stay organized and keep track of your job applications by saving details.
+- **Interactive UI with Framer Motion**: Experience a visually stunning home page with interactive animations and transitions powered by Framer Motion.
+- **Job Adding and Editing Options**: Seamlessly add and edit job postings with our intuitive job management tools. Whether you're a recruiter looking to post new job opportunities or an employer updating existing listings.
 
 
 **Technology Used**:
